@@ -1,0 +1,50 @@
+azure-hub-spoke/
+│
+├── main.tf          # Main Terraform configuration file
+├── variables.tf     # Variable declarations
+├── outputs.tf       # Output configuration for VNet details
+└── terraform.tfvars # Variable values
+
+
+// Azure Networking Project using Terraform: 
+Hub-Spoke Architecture Deployment
+
+This project involves deploying a Hub-Spoke Network Architecture in Azure using Terraform. In this architecture, 
+a Hub Virtual Network (VNet) will serve as the central network and will be connected to multiple Spoke VNets, 
+with shared services like a VPN Gateway, Azure Firewall, and Bastion Host in the Hub network.
+
+// Case Study: 
+Company Network Segmentation Using Hub-Spoke Topology
+Scenario: A large company, "TheAchievershub," has multiple departments, each requiring its own isolated network to run workloads securely. 
+The IT department wants to centralize shared services like firewalls, VPN gateways, and security controls in one Hub network while ensuring each department 
+(HR, Finance, and Engineering) has its own Spoke network for running applications. The network must be scalable for future expansion and easy to monitor and secure.
+
+Objective: Deploy a Hub-Spoke architecture using Terraform with centralized services in the Hub VNet and multiple Spoke VNets for different departments. 
+The Spokes will communicate with the Hub but not with each other. 
+
+The architecture must include:
+
+// Hub network with a Firewall and VPN Gateway.
+// Spoke networks for HR, Finance, and Engineering departments.
+// VNet Peering between the Hub and each Spoke.
+
+Step-by-Step Guide: Terraform Hub-Spoke Deployment in Azure
+
+1. Prerequisites
+-Terraform installed on your machine.
+-Azure CLI installed for authentication (az login).
+-Azure Subscription where resources will be deployed.
+
+
+Deployment Steps
+Initialize Terraform: Run the following command in the project directory to initialize the configuration:
+
+// terraform init
+Plan the Infrastructure: Before applying, you can view what Terraform will create by running:
+
+// terraform plan
+Deploy the Infrastructure: Apply the configuration to deploy the Hub-Spoke architecture:
+
+// terraform apply
+Verify the Resources:
+

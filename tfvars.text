@@ -1,0 +1,87 @@
+Why Use terraform.tfvars?
+
+Better Organization: By separating configuration from the data, your Terraform scripts are more readable, manageable, and easier to modify.
+Environment-Specific Values: You can create different tfvars files for different environments, e.g., terraform.prod.tfvars for production and terraform.dev.tfvars for development.
+Alternate Ways to Pass Variable Values
+Besides using terraform.tfvars, you can also pass variable values in other ways:
+
+Command Line: Using the -var flag when running commands:
+
+bash
+terraform apply -var="location=West Europe" -var="resource_group_name=my-resource-group"
+Environment Variables: Using the TF_VAR_ prefix for environment variables:
+
+bash
+export TF_VAR_location="West Europe"
+export TF_VAR_resource_group_name="my-resource-group"
+Explicitly Specify a .tfvars File: You can specify a particular .tfvars file when running Terraform commands:
+
+bash
+terraform apply -var-file="production.tfvars"
+Summary of terraform.tfvars
+Purpose: A terraform.tfvars file is used to store values for variables in Terraform configurations.
+Usage: Define variables in your .tf files (e.g., variables.tf) and store the actual values in the terraform.tfvars file.
+Advantages: It allows for cleaner, reusable, and more organized code by separating the logic of your Terraform configuration from the values specific to your environment.
+This approach makes it easier to manage your infrastructure across multiple environments or configurations without needing to modify your core Terraform scripts.
+
+
+What is the Purpose of terraform.tfvars?
+
+Separation of Variables and Configuration: Instead of hardcoding variable values directly in your Terraform configuration (e.g., main.tf), 
+you declare variables in your .tf files and then assign values to them in the terraform.tfvars file.
+Reusability: This makes your Terraform code reusable because the actual values (e.g., specific regions, credentials, resource names) can be managed separately. 
+This is especially useful when you want to use different values for different environments (e.g., dev, staging, prod).
+Simplified Input: Instead of being prompted to input values during the Terraform apply process, you can store all values in the terraform.tfvars file, 
+and Terraform will automatically read from it.
+
+// How to Use terraform.tfvars
+Declare Variables in the Configuration Files (variables.tf): First, declare the variables that you want to parameterize in your Terraform configuration. 
+For example:
+
+hcl
+variable "location" {
+  description = "Azure Region"
+  default     = "East US"  # Optional: Default value
+}
+
+variable "resource_group_name" {
+  description = "Name of the Resource Group"
+}
+
+variable "client_id" {
+  description = "Azure Client ID for Service Principal"
+}
+
+variable "client_secret" {
+  description = "Azure Client Secret for Service Principal"
+}
+
+//Define Variable Values in terraform.tfvars: Next, create a file called terraform.tfvars (or *.auto.tfvars) in the same directory as your Terraform configuration files. 
+This file will contain the actual values for the variables declared in variables.tf. For example:
+
+hcl
+# terraform.tfvars
+
+location            = "West Europe"
+resource_group_name = "my-resource-group"
+client_id           = "your-client-id"
+client_secret       = "your-client-secret"
+The values in this file will be automatically used by Terraform whenever you run terraform apply or terraform plan.
+
+
+// Use Variables in main.tf: In your main.tf, you can reference these variables:
+
+hcl
+provider "azurerm" {
+  features {}
+
+  client_id     = var.client_id
+  client_secret = var.client_secret
+}
+
+resource "azurerm_resource_group" "example" {
+  name     = var.resource_group_name
+  location = var.location
+}
+Here, var.client_id, var.client_secret, etc., refer to the variable values defined in terraform.tfvars.
+
